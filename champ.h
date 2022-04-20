@@ -28,7 +28,7 @@ double delta_x(int width, int height);
  */
 double compute_champs(charge_t c, vec2 p)
 {
-    return (k * c.q) / pow(2, vec2_sub(p, c.pos));
+    return (k * c.q) / pow(vec2_norm(vec2_sub(p, c.pos)), 2);
 }
 
 /**
@@ -38,7 +38,16 @@ double compute_champs(charge_t c, vec2 p)
  */
 bool compute_e(charge_t c, vec2 p, double eps, vec2 *e)
 {
-    compute_champs(c, )
+
+    vec2 qP = vec2_sub(p, c.pos);
+    double norm_qP = vec2_norm(qP);
+    if (norm_qP < eps)
+        return false;
+    else
+    {
+        double E = compute_champs(c, p);
+        *e = vec2_mul(1 / norm_qP, qP);
+    }
 }
 
 /**
@@ -46,7 +55,26 @@ bool compute_e(charge_t c, vec2 p, double eps, vec2 *e)
     Compute the normalized sum of Ei*qiP/norm(qiP)
     Return false if for some qiP, norm(qiP) < eps
  */
-bool compute_total_normalized_e(charge_t *charges, int num_charges, vec2 p, double eps, vec2 *e);
+bool compute_total_normalized_e(charge_t *charges, int num_charges, vec2 p, double eps, vec2 *e)
+{
+
+    vec2 tmp;
+    vec2 normalized_sum;
+    for (int i = 0; i < num_charges; i++)
+    {
+
+        bool com_charge = compute_e(charges[i], p, eps, &tmp);
+        if (com_charge)
+        {
+            normalized_sum = vec2_add(sum, tmp);
+        }
+        else
+            return false;
+    }
+
+    *e = normalized_sum;
+    return true;
+}
 
 /**
  * @brief
