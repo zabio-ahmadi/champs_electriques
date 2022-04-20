@@ -70,7 +70,3 @@ double delta_x(int width, int height)
 {
     return 1 / sqrt(pow(2, width) + pow(2, height));
 }
-
-bool compute_e(charge_t c, vec2 p, double eps, vec2 *e)
-{
-}

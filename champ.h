@@ -24,10 +24,22 @@ double delta_x(int width, int height);
 
 /**
  * @brief
+ * calcule champs de charge en un point
+ */
+double compute_champs(charge_t c, vec2 p)
+{
+    return (k * c.q) / pow(2, vec2_sub(p, c.pos));
+}
+
+/**
+ * @brief
     Compute E*qP/norm(qP)
     Return false if norm(qP) < eps
  */
-bool compute_e(charge_t c, vec2 p, double eps, vec2 *e);
+bool compute_e(charge_t c, vec2 p, double eps, vec2 *e)
+{
+    compute_champs(c, )
+}
 
 /**
  * @brief

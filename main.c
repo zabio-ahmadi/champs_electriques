@@ -1,15 +1,4 @@
-#include "utils/gfx/gfx.h"
 #include "champ.h"
-
-// Render some white noise.
-// @param context graphical context to use.
-// static void render(struct gfx_context_t *context, int width, int height)
-// {
-//     gfx_clear(context, COLOR_BLUE);
-// }
-
-/// Program entry point.
-/// @return the application status code (0 if success).
 
 int main()
 {
