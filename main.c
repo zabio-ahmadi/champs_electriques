@@ -16,19 +16,27 @@ int main()
         gfx_clear(ctxt, COLOR_BLACK);
         // render(ctxt, WIDTH, HEIGHT);
 
-        coordinates c;
-        c.row = 400;
-        c.column = 400;
-        // draw a line
-        for (int i = 0; i < 100; i++)
-        {
-            gfx_putpixel(ctxt, c.column + i, c.row, COLOR_GREEN);
-        }
+        charge_t charges[2];
+        charge_t c1;
+        c1.pos.x = 0.7;
+        c1.pos.y = 0.7;
+        c1.q = 4;
 
-        // coordinates c;
-        // c.row = 400;
-        // c.column = 400;
-        // draw_circle(ctxt, c, 50, COLOR_BLUE);
+        charge_t c2;
+        c2.pos.x = 0.1;
+        c2.pos.y = 0.9;
+        c2.q = 6;
+
+        charges[0] = c1;
+        charges[1] = c2;
+
+        // vec2 tmp;
+        for (int i = 0; i < nb_charges; i++)
+        {
+
+            coordinates c_coord = position_to_coordinates(charges[i].pos, WIDTH, HEIGHT, X0, X1, Y0, Y1);
+            draw_charges(ctxt, c_coord, i, 10, (i == 1) ? COLOR_RED : COLOR_BLUE);
+        }
         gfx_present(ctxt);
     }
 

@@ -3,78 +3,55 @@
 #include "utils/gfx/gfx.h"
 #include "utils/vec2/vec2.h"
 
-#define HEIGHT 1080
-#define WIDTH 1920
+#define HEIGHT 500
+#define WIDTH 500
 #ifndef _CHAMPS_
 #define _CHAMPS_
-// void drawCircle(struct gfx_context_t *ctxt, int x, int y, int r, uint32_t color);
+
 #define k 9e9
+
+#define X0 0
+#define X1 1
+#define Y0 0
+#define Y1 1
+#define nb_charges 2
 
 typedef struct
 {
-    double q;
-    vec2 pos;
+   double q;
+   vec2 pos;
 } charge_t;
 
 void draw_disque(struct gfx_context_t *ctxt, int x_cord, int y_cord, int r, uint32_t color);
 
 void draw_circle(struct gfx_context_t *ctxt, coordinates c, uint32_t radius, uint32_t color);
 
-double delta_x(int width, int height);
-
 /**
  * @brief
  * calcule champs de charge en un point
+ *
+ * E = k*q/r^2
  */
-double compute_champs(charge_t c, vec2 p)
-{
-    return (k * c.q) / pow(vec2_norm(vec2_sub(p, c.pos)), 2);
-}
+double compute_champs(charge_t c, vec2 p);
 
 /**
  * @brief
     Compute E*qP/norm(qP)
     Return false if norm(qP) < eps
  */
-bool compute_e(charge_t c, vec2 p, double eps, vec2 *e)
-{
-
-    vec2 qP = vec2_sub(p, c.pos);
-    double norm_qP = vec2_norm(qP);
-    if (norm_qP < eps)
-        return false;
-    else
-    {
-        double E = compute_champs(c, p);
-        *e = vec2_mul(1 / norm_qP, qP);
-    }
-}
+bool compute_e(charge_t c, vec2 p, double eps, vec2 *e);
 
 /**
  * @brief
     Compute the normalized sum of Ei*qiP/norm(qiP)
     Return false if for some qiP, norm(qiP) < eps
  */
-bool compute_total_normalized_e(charge_t *charges, int num_charges, vec2 p, double eps, vec2 *e)
-{
+bool compute_total_normalized_e(charge_t *charges, int num_charges, vec2 p, double eps, vec2 *e);
 
-    vec2 tmp;
-    vec2 normalized_sum;
-    for (int i = 0; i < num_charges; i++)
-    {
+coordinates position_to_coordinates(vec2 p, int width, int height, double x0, double x1, double y0, double y1);
+double delta_x(int width, int height);
 
-        bool com_charge = compute_e(charges[i], p, eps, &tmp);
-        if (com_charge)
-        {
-            normalized_sum = vec2_add(sum, tmp);
-        }
-        else
-            return false;
-    }
-
-    *e = normalized_sum;
-    return true;
-}
+void draw_charges(struct gfx_context_t *ctxt, coordinates c, bool type, uint32_t radius, uint32_t color);
 
 /**
  * @brief
@@ -83,7 +60,21 @@ bool compute_total_normalized_e(charge_t *charges, int num_charges, vec2 p, doub
     Returns false if pos0 is not a valid position
     (for example if pos0 is too close to a charge).
  */
-static bool draw_field_line(struct gfx_context_t *ctxt, charge_t *charges, int num_charges, double dx, vec2 pos0, double x0, double x1, double y0, double y1);
+// void draw_field_line(struct gfx_context_t *ctxt, charge_t *charges, int num_charges, double dx, double eps)
+// {
+
+//     vec2 pos = vec2_create(0, 0);
+//     vec2 tmp;
+
+//     for (int i = 0; i < WIDTH; i++)
+//     {
+//         bool is_valid = compute_total_normalized_e(charges, num_charges, pos, eps, &tmp);
+//         for (int j = 0; j < HEIGHT; j++)
+//         {
+//             pos = vec2_create((double)i, (double)j);
+//         }
+//     }
+// }
 
 /**
  * @brief
@@ -91,5 +82,5 @@ static bool draw_field_line(struct gfx_context_t *ctxt, charge_t *charges, int n
     A circle with minus sign for negative charges
     A circle with a plus sign for positive charges
  */
-static void draw_charges(struct gfx_context_t *context, charge_t *charges, int num_charges, double x0, double x1, double y0, double y1);
+// static void draw_charges(struct gfx_context_t *context, charge_t *charges, int num_charges, double x0, double x1, double y0, double y1);
 #endif
