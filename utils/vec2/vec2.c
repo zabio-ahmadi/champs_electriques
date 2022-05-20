@@ -129,7 +129,6 @@ bool vec2_is_approx_equal(vec2 lhs, vec2 rhs, double eps)
 /// @return The coordinates (rwo, column).
 coordinates vec2_to_coordinates(vec2 v, uint32_t width, uint32_t height)
 {
-
     coordinates coord;
     coord.row = (height) / 2 + ((double)height - 1.0) / 2.0 * v.y;
     coord.column = (width) / 2 + ((double)width - 1.0) / 2.0 * v.x;

@@ -2,8 +2,8 @@
 #define _UTILS_H_
 #include <stdint.h>
 
-const double K = 8.988e9;
-const double E = 1.602e-19;
+#define PHYS_K 8.988e9
+#define PHYS_E 1.602e-19
 
 typedef struct
 {
