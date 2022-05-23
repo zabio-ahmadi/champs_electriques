@@ -19,9 +19,9 @@
 #define WIDTH 500
 
 #define NB_CHARGES 4
-#define NB_POINTS 290
+#define NB_POINTS 300
 
-#define champs_color COLOR_YELLOW
+#define champs_color COLOR_WHITE
 
 #define EPS 0.022
 #define CHARGE_RAYON 8
@@ -74,7 +74,7 @@ bool is_point(coordinates_t current, coordinates_t old);
 
 void draw_line(struct gfx_context_t *ctxt, coordinates_t old, coordinates_t current);
 
-bool calc_next_position(charge_t *charges, int nb_charges, double eps, double delta, vec2 *p, bool is_end);
+bool calc_next_position(charge_t *charges, int nb_charges, double eps, double delta, vec2 *p, int index);
 /**
  * @brief
  * compute & draw points of a field line
@@ -83,7 +83,7 @@ bool calc_next_position(charge_t *charges, int nb_charges, double eps, double de
  */
 bool draw_field_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_charges, double x0, double x1, double y0, double y1, vec2 p0, double dx);
 
-bool draw_curved_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_charge, double dx, double x0, double x1, double y0, double y1, vec2 p, bool is_ended);
+bool draw_curved_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_charge, double dx, double x0, double x1, double y0, double y1, vec2 p, int index);
 
 void simulate_champs(struct gfx_context_t *ctxt);
 #endif

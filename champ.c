@@ -84,13 +84,12 @@ bool draw_field_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_charg
 {
     for (int i = 0; i < 2; i++)
     {
-        bool is_end = (i == 0) ? false : true;
-        draw_curved_line(ctxt, charges, nb_charges, dx, x0, x1, y0, y1, p0, is_end);
+        draw_curved_line(ctxt, charges, nb_charges, dx, x0, x1, y0, y1, p0, i);
     }
     return true;
 }
 
-bool draw_curved_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_charge, double dx, double x0, double x1, double y0, double y1, vec2 p, bool is_ended)
+bool draw_curved_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_charge, double dx, double x0, double x1, double y0, double y1, vec2 p, int index)
 {
     vec2 old_position = p;
 
@@ -104,7 +103,7 @@ bool draw_curved_line(struct gfx_context_t *ctxt, charge_t *charges, int nb_char
         draw_line(ctxt, c_current, c_old);
 
         // calcule le point suivant
-        calc_next_position(charges, nb_charge, EPS, dx, &p, is_ended);
+        calc_next_position(charges, nb_charge, EPS, dx, &p, index);
         old_position = p;
     }
     return true;
@@ -141,7 +140,7 @@ bool point_is_close_to_charge(vec2 p, charge_t *charges, int nb_charges)
     return false;
 }
 
-bool calc_next_position(charge_t *charges, int nb_charges, double eps, double delta, vec2 *p, bool is_end)
+bool calc_next_position(charge_t *charges, int nb_charges, double eps, double delta, vec2 *p, int index)
 {
     vec2 tmp;
     bool draw_is_valid = compute_total_normalized_e(charges, nb_charges, *p, eps, &tmp);
@@ -152,7 +151,7 @@ bool calc_next_position(charge_t *charges, int nb_charges, double eps, double de
         vec2_mul(delta, tmp).x / vec2_norm(tmp),
         vec2_mul(delta, tmp).y / vec2_norm(tmp));
 
-    *p = (is_end) ? vec2_sub(*p, tmp) : vec2_add(*p, tmp);
+    *p = (index) ? vec2_sub(*p, tmp) : vec2_add(*p, tmp);
 
     return draw_is_valid;
 }
